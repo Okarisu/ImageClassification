@@ -1,7 +1,12 @@
+using System.Runtime.CompilerServices;
+
 namespace ImageClassification;
 
 public class Terminal
 {
+
+    public static readonly ConsoleColor CC = Console.ForegroundColor;
+
     public static void GetHelp()
     {
     }
@@ -10,17 +15,29 @@ public class Terminal
     {
         Console.WriteLine("Invalid argument! Type classify --help to get more information.");
     }
+    public static void PrintArgumentError(string message)
+    {
+        Console.WriteLine("Invalid argument! Type classify --help to get more information.");
+    }
 
     public static void PrintFilesystemAlternationMessage(string directory)
     {
-        var cc = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("Filesystem error: Missing directory \"{0}\", recreating", directory);
-        Console.ForegroundColor = cc;
+        Console.ForegroundColor = CC;
     }
 
-    public static void PrintFilesystemError()
+    public static void PrintFilesystemError(string message)
     {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ForegroundColor = CC;
+    }
 
+    public static void Done(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(message);
+        Console.ForegroundColor = CC;
     }
 }
