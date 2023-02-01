@@ -1,28 +1,32 @@
+using ImageClassification;
+using static ImageClassification.Terminal;
+using static ImageClassification.Program;
+
 namespace Classifier;
 
 public class Init
 {
-    public static void InitProject()
+    public static void CheckFilesystem()
     {
-        var wd = Directory.GetCurrentDirectory();
-        Directory.CreateDirectory(Path.Combine(wd, "assetsToGetNameOfPikachu"));
-        const string dataFolder = "data";
-        var assetsFolder = Path.Combine(dataFolder, "assets");
+        var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT};
         
-        
+        foreach (var dir in filesystem)
+        {
+            if (Directory.Exists(dir)) continue;
+            Directory.CreateDirectory(dir);
+            PrintFilesystemAlternationMessage(dir);
+        }
     }
-    
-    public static void RenameAssets(string folder)
+
+    public static void RenameAssets(string folder, string extension, string namingConvention)
     {
-        string path = Path.Combine();
-        string namingConvention = "RuriLapisL";
-        string extension;
+        var path = Path.Combine(Program.WD, folder);
         try
         {
             DirectoryInfo info = new DirectoryInfo(path);
 
             var i = 1;
-            foreach (var file in info.GetFiles("*.jpg"))
+            foreach (var file in info.GetFiles("*." + extension))
             {
                 File.Move(file.FullName, Path.Combine(path, namingConvention + "_" + i));
                 i++;
@@ -39,4 +43,8 @@ public class Init
         }
     }
 
+    public static void InitTags()
+    {
+        
+    }
 }

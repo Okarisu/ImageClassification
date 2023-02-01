@@ -1,4 +1,5 @@
-﻿using Classifier;
+﻿using static Classifier.Init;
+using static ImageClassification.Terminal;
 
 namespace ImageClassification;
 
@@ -11,13 +12,13 @@ class Program
     public static readonly string ASSETS = Path.Combine(WD, "assets");
     public static readonly string TRAINING_IMAGES = Path.Combine(ASSETS, "training_images");
     public static readonly string DATA = Path.Combine(ASSETS, "data");
+    public static readonly string MODELS = Path.Combine(ASSETS, "data");
     public static readonly string TAGS = Path.Combine(DATA, "tags.tsv");
     public static readonly string INPUT = Path.Combine(WD, "INPUT");
 
     static void Main(string[] args)
     {
-        Console.WriteLine(Directory.GetCurrentDirectory());
-
+        CheckFilesystem();
         var mlContext = new MLContext();
 
         Console.WriteLine(args[1]);
@@ -27,19 +28,25 @@ class Program
             {
                 case "--help" or "-h":
                 {
-                    Terminal.GetHelp();
+                    GetHelp();
                     break;
                 }
                 case "--init":
                 {
-                    Init.InitProject();
+                    if (!(args.Contains("-r")))
+                    {
+                        PrintArgumentError();
+                        break;
+                    }
+                    
+
                     break;
                 }
-                case "--train" or "-t":
+                case "--train":
                 {
                     if (!(args.Contains("-i") && args.Contains("-o")))
                     {
-                        Terminal.PrintArgumentError();
+                        PrintArgumentError();
                         break;
                     }
 
@@ -54,7 +61,7 @@ class Program
                 {
                     if (!(args.Contains("-m") && args.Contains("-i") && args.Contains("-o")))
                     {
-                        Terminal.PrintArgumentError();
+                        PrintArgumentError();
                         break;
                     }
 
@@ -67,20 +74,20 @@ class Program
                         var outputIndex = Array.IndexOf(args, "-o");
                         var inputDirectory = args[outputIndex + 1];
                         Controller.Classify(mlContext, modelInput, imageInput, inputDirectory);
-
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
                     }
+
                     break;
                 }
             }
         }
         else
         {
-            Terminal.PrintArgumentError();
-            Terminal.GetHelp();
+            PrintArgumentError();
+            GetHelp();
         }
 
 

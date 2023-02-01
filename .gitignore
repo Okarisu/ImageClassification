@@ -1,3 +1,6 @@
 runtimes
 .idea
-training_images
+bin
+obj
+training_images/
+INPUT/
