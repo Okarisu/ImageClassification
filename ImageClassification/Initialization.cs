@@ -1,11 +1,10 @@
-using System.Reflection.PortableExecutable;
-using ImageClassification;
-using static ImageClassification.Terminal;
-using static ImageClassification.Program;
+namespace ImageClassification;
+using static Terminal;
+using static Program;
 
-namespace Classifier;
 
-public class Init
+
+public class Initialization
 {
     public static void CheckFilesystem()
     {
@@ -27,7 +26,6 @@ public class Init
         if (!File.Exists(TAGS))
             File.Create(TAGS);
     }
-
     public static void RenameAssets(string folder, string namingConvention)
     {
         var path = Path.Combine(Program.WD, folder);
@@ -51,7 +49,6 @@ public class Init
             Done("== Renaming assets in "+ Path.GetDirectoryName(path) +" to "+namingConvention+"_N completed. ==");
         }
     }
-
     public static void MoveImagesToTrainingFolder(string input)
     {
         foreach (var file in new DirectoryInfo(input).GetFiles())
@@ -59,7 +56,6 @@ public class Init
             File.Move(file.FullName, Path.Combine(TRAINING_IMAGES, file.FullName));
         }
     }
-
     public static void InitTags(string convention, string tag)
     {
         foreach (var file in new DirectoryInfo(TRAINING_IMAGES).GetFiles())

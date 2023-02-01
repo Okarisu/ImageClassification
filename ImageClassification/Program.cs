@@ -1,4 +1,4 @@
-﻿using static Classifier.Init;
+﻿using static ImageClassification.Initialization;
 using static ImageClassification.Terminal;
 
 namespace ImageClassification;
@@ -22,7 +22,6 @@ class Program
         CheckFilesystem();
         var mlContext = new MLContext();
 
-        Console.WriteLine(args[1]);
         if (args.Length != 0)
         {
             switch (args[1])
@@ -34,7 +33,8 @@ class Program
                 }
                 case "--init":
                 {
-                    if (!(args.Contains("-r") || args.Contains("--rename") || args.Contains("-t") || args.Contains("--tag")))
+                    if (!(args.Contains("-r") || args.Contains("--rename") || args.Contains("-t") ||
+                          args.Contains("--tag")))
                     {
                         PrintArgumentError("Missing --rename or --tag argument");
                         break;
@@ -56,6 +56,7 @@ class Program
                             PrintArgumentError("Missing --input-folder");
                             break;
                         }
+
                         var inputFolder = args[inputIndex + 1];
 
                         int conventionIndex;
@@ -72,11 +73,12 @@ class Program
                             PrintArgumentError("Missing --naming-convention argument!");
                             break;
                         }
+
                         var namingConvention = args[conventionIndex + 1];
 
 
                         RenameAssets(inputFolder, namingConvention);
-                        
+
                         Console.WriteLine("Do you wish to move renamed images to training folder? [Y/n]");
                         var key = Console.ReadKey();
                         if (key.ToString()?.ToLower() == "y" || key.Key == ConsoleKey.Enter)
@@ -103,6 +105,7 @@ class Program
                                 PrintArgumentError("Missing --naming-convention argument!");
                                 break;
                             }
+
                             var namingConvention = args[conventionIndex + 1];
 
                             int tagIndex;
@@ -119,30 +122,38 @@ class Program
                                 PrintArgumentError("Missing --tag argument!");
                                 break;
                             }
+
                             var tag = args[tagIndex + 1];
-                            
+
                             InitTags(namingConvention, tag);
                         }
-
                     }
 
                     break;
                 }
                 case "--train":
                 {
-                    if (!(args.Contains("-i") && args.Contains("-o")))
+                    if (!(args.Contains("-mo") || args.Contains("--model-output")))
                     {
                         PrintArgumentError();
                         break;
                     }
 
-                    var inputIndex = Array.IndexOf(args, "-i");
-                    var inputDirectory = args[inputIndex + 1];
-                    var outputIndex = Array.IndexOf(args, "-o");
-                    var modelOutput = args[outputIndex + 1];
-                    Controller.TrainModel(mlContext, inputDirectory, modelOutput);
+                    int outputIndex;
+                    if (args.Contains("-mo"))
+                    {
+                        outputIndex = Array.IndexOf(args, "-mo");
+                    }
+                    else 
+                    {
+                        outputIndex = Array.IndexOf(args, "--model-output");
+                    }
+
+                    string modelOutput = args[outputIndex + 1];
+                    Controller.TrainModel(mlContext, modelOutput);
                     break;
                 }
+
                 case "--classify" or "-c":
                 {
                     if (!(args.Contains("-m") && args.Contains("-i") && args.Contains("-o")))
@@ -170,6 +181,7 @@ class Program
                 }
             }
         }
+
         else
         {
             PrintArgumentError();
