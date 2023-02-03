@@ -1,8 +1,8 @@
 namespace ImageClassification;
+
 using static Terminal;
 using static Program;
-
-
+using CommandLine;
 
 public class Initialization
 {
@@ -12,10 +12,11 @@ public class Initialization
 
         if (!Directory.Exists(INCEPTION))
         {
-            PrintFilesystemError("Critical error: Missing Inception model! Download it at https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip");
+            PrintFilesystemError(
+                "Critical error: Missing Inception model! Download it at https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip");
             Directory.CreateDirectory(INCEPTION);
         }
-        
+
         foreach (var dir in filesystem)
         {
             if (Directory.Exists(dir)) continue;
@@ -26,9 +27,10 @@ public class Initialization
         if (!File.Exists(TAGS))
             File.Create(TAGS);
     }
-    public static void RenameAssets(string folder, string namingConvention)
+
+    public static void RenameAssets(RenameOptions options)
     {
-        var path = Path.Combine(Program.WD, folder);
+        var path = Path.Combine(Program.WD, options.InputFolder);
         try
         {
             DirectoryInfo info = new DirectoryInfo(path);
@@ -36,8 +38,22 @@ public class Initialization
             var i = 1;
             foreach (var file in info.GetFiles())
             {
-                File.Move(file.FullName, Path.Combine(path, namingConvention + "_" + i));
+                File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i));
                 i++;
+            }
+
+            if (options.Move)
+            {
+                MoveImagesToTrainingFolder(options.InputFolder);
+            }
+            else
+            {
+                Console.WriteLine("Do you wish to move renamed images to training folder? [Y/n] ");
+                var key = Console.ReadKey(false);
+                if (key.ToString()?.ToLower() == "y" || key.Key == ConsoleKey.Enter)
+                {
+                    MoveImagesToTrainingFolder(options.InputFolder);
+                }
             }
         }
         catch (DirectoryNotFoundException e)
@@ -46,23 +62,26 @@ public class Initialization
         }
         finally
         {
-            Done("== Renaming assets in "+ Path.GetDirectoryName(path) +" to "+namingConvention+"_N completed. ==");
+            Done("== Renaming assets in " + Path.GetDirectoryName(path) + " to " + options.Convention +
+                 " completed. ==");
         }
     }
-    public static void MoveImagesToTrainingFolder(string input)
+
+    private static void MoveImagesToTrainingFolder(string input)
     {
         foreach (var file in new DirectoryInfo(input).GetFiles())
         {
             File.Move(file.FullName, Path.Combine(TRAINING_IMAGES, file.FullName));
         }
     }
-    public static void InitTags(string convention, string tag)
+
+    public static void InitTags(TagOptions options)
     {
         foreach (var file in new DirectoryInfo(TRAINING_IMAGES).GetFiles())
         {
-            if (!file.FullName.Contains(convention)) continue;
+            if (!file.FullName.Contains(options.Convention)) continue;
             using StreamWriter writer = new StreamWriter(TAGS, true);
-            writer.WriteLine("{0}	{1}", file.FullName, tag);
+            writer.WriteLine("{0}	{1}", file.FullName, options.Tag);
         }
     }
 }

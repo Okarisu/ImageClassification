@@ -8,11 +8,54 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="CsvHelper" Version="30.0.1" />
       <PackageReference Include="Microsoft.ML" Version="2.0.1-preview.22573.9" />
       <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="2.0.1-preview.22573.9" />
       <PackageReference Include="Microsoft.ML.TensorFlow" Version="2.0.1-preview.22573.9" />
       <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.10.0" />
       <PackageReference Include="SciSharp.TensorFlow.Redist-Linux-GPU" Version="2.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="bin\Debug\net7.0\assets\data\tags.tsv" />
+      <None Include="bin\Debug\net7.0\assets\data\tags_bk.tsv" />
+      <None Include="bin\Debug\net7.0\assets\data\test-tags.tsv" />
+      <None Include="bin\Debug\net7.0\assets\inception\imagenet.csv" />
+      <None Include="bin\Debug\net7.0\assets\inception\imagenet.tsv" />
+      <None Include="bin\Debug\net7.0\assets\inception\imagenet_comp_graph_label_strings.txt" />
+      <None Include="bin\Debug\net7.0\assets\inception\LICENSE" />
+      <None Include="bin\Debug\net7.0\assets\inception\tensorflow_inception_graph.pb" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani1.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani10.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani11.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani12.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani13.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani14.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani15.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani16.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani2.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani3.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani4.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani5.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani6.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani7.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani8.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\ani9.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\broccoli.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\broccoli2.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\pizza.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\pizza2.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\pizza3.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\teddy2.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\teddy3.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\teddy4.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\teddy6.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\toaster.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\toaster2.png" />
+      <None Include="bin\Debug\net7.0\assets\training_images\toaster3.jpg" />
+      <None Include="bin\Debug\net7.0\assets\training_images\YCH1.jpg" />
+      <None Include="bin\Debug\net7.0\INPUT\girl.jpg" />
     </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "zlR9NH/MF+HsgdeetLiymMs8cK1vUjgnJQkTs9Vn21GJfZW6SwyZiMxFFvgIxsHQEhZ5NT+IqXVZhDHt4HiPjg==",
+  "dgSpecHash": "z1i3IKLdogZkwWR73YzKp+StwnKpJOCKs7xzVQ0yqF33ymejn2fmIJxBaAD1nI/X7FgZx8/SMqLBvqChVMjx+g==",
   "success": true,
   "projectFilePath": "/home/toohka/Documents/DEV/ImageClassification/ImageClassification/ImageClassification.csproj",
   "expectedPackageFiles": [
+    "/home/toohka/.nuget/packages/commandlineparser/2.9.1/commandlineparser.2.9.1.nupkg.sha512",
+    "/home/toohka/.nuget/packages/csvhelper/30.0.1/csvhelper.30.0.1.nupkg.sha512",
     "/home/toohka/.nuget/packages/google.protobuf/3.19.6/google.protobuf.3.19.6.nupkg.sha512",
     "/home/toohka/.nuget/packages/microsoft.ml/2.0.1-preview.22573.9/microsoft.ml.2.0.1-preview.22573.9.nupkg.sha512",
     "/home/toohka/.nuget/packages/microsoft.ml.cpumath/2.0.1-preview.22573.9/microsoft.ml.cpumath.2.0.1-preview.22573.9.nupkg.sha512",

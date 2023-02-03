@@ -7,21 +7,17 @@ using Microsoft.ML.Data;
 
 public class Model
 {
-    private static readonly string _assetsPath = ASSETS;
-    private static readonly string _imagesFolder = TRAINING_IMAGES;
-    private static readonly string _trainTagsTsv = TAGS;
     private static readonly string _testTagsTsv = Path.Combine(DATA, "test-tags.tsv");
-    private static readonly string _predictSingleImage = Path.Combine(_imagesFolder, "girl.jpg");
 
     private static readonly string _inceptionTensorFlowModel =
-        Path.Combine(_assetsPath, "inception", "tensorflow_inception_graph.pb");
+        Path.Combine(ASSETS, "inception", "tensorflow_inception_graph.pb");
 
     
 
     public static (ITransformer model, IDataView data) GenerateModel(MLContext mlContext)
     {
         IEstimator<ITransformer> pipeline = mlContext.Transforms.LoadImages(outputColumnName: "input",
-                imageFolder: _imagesFolder, inputColumnName: nameof(ImageData.ImagePath))
+                imageFolder: TRAINING_IMAGES, inputColumnName: nameof(ImageData.ImagePath))
             .Append(mlContext.Transforms.ResizeImages(outputColumnName: "input",
                 imageWidth: InceptionSettings.ImageWidth, imageHeight: InceptionSettings.ImageHeight,
                 inputColumnName: "input"))
@@ -36,7 +32,7 @@ public class Model
                 featureColumnName: "softmax2_pre_activation"))
             .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabelValue", "PredictedLabel"))
             .AppendCacheCheckpoint(mlContext);
-        IDataView trainingData = mlContext.Data.LoadFromTextFile<ImageData>(path: _trainTagsTsv, hasHeader: false);
+        IDataView trainingData = mlContext.Data.LoadFromTextFile<ImageData>(path: TAGS, hasHeader: false);
         Console.WriteLine("=============== Training classification model ===============");
         ITransformer model = pipeline.Fit(trainingData);
         IDataView testData = mlContext.Data.LoadFromTextFile<ImageData>(path: _testTagsTsv, hasHeader: false);
@@ -55,19 +51,19 @@ public class Model
         return (model, trainingData);
     }
 
-    public static void ClassifySingleImage(MLContext mlContext, ITransformer model)
+    public static (string image, string label, double score) ClassifySingleImage(MLContext mlContext, ITransformer model, string fileToClassify)
     {
         var imageData = new ImageData()
         {
-            ImagePath = _predictSingleImage
+            ImagePath = fileToClassify
         };
         var predictor = mlContext.Model.CreatePredictionEngine<ImageData, ImagePrediction>(model);
         var prediction = predictor.Predict(imageData);
-        Console.WriteLine("=============== Making single image classification ===============");
+        //Console.WriteLine("=============== Making single image classification ===============");
         Console.WriteLine(
             $"Image: {Path.GetFileName(imageData.ImagePath)} predicted as: {prediction.PredictedLabelValue} with score: {prediction.Score.Max()} ");
+        return (Path.GetFileName(imageData.ImagePath), prediction.PredictedLabelValue, prediction.Score.Max());
     }
-    
 
     private static void DisplayResults(IEnumerable<ImagePrediction> imagePredictionData)
     {
@@ -77,7 +73,6 @@ public class Model
                 $"Image: {Path.GetFileName(prediction.ImagePath)} predicted as: {prediction.PredictedLabelValue} with score: {prediction.Score.Max()} ");
         }
     }
-
     private struct InceptionSettings
     {
         public const int ImageHeight = 224;

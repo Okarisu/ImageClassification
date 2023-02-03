@@ -51,3 +51,5 @@
 /home/toohka/Documents/DEV/ImageClassification/ImageClassification/obj/Debug/net7.0/ImageClassification.pdb
 /home/toohka/Documents/DEV/ImageClassification/ImageClassification/obj/Debug/net7.0/ImageClassification.genruntimeconfig.cache
 /home/toohka/Documents/DEV/ImageClassification/ImageClassification/obj/Debug/net7.0/ref/ImageClassification.dll
+/home/toohka/Documents/DEV/ImageClassification/ImageClassification/bin/Debug/net7.0/CommandLine.dll
+/home/toohka/Documents/DEV/ImageClassification/ImageClassification/bin/Debug/net7.0/CsvHelper.dll
