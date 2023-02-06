@@ -14,10 +14,12 @@ class Program
     public static readonly string ASSETS = Path.Combine(WD, "assets");
     public static readonly string INCEPTION = Path.Combine(ASSETS, "inception");
     public static readonly string TRAINING_IMAGES = Path.Combine(ASSETS, "training_images");
+    public static readonly string IMAGES_TO_PROCESS = Path.Combine(ASSETS, "images_to_process");
     public static readonly string DATA = Path.Combine(ASSETS, "data");
     public static readonly string MODELS = Path.Combine(ASSETS, "models");
     public static readonly string TAGS = Path.Combine(DATA, "tags.tsv");
     public static readonly string INPUT = Path.Combine(WD, "INPUT");
+    public static readonly string CLASSIFY = Path.Combine(INPUT, "CLASSIFY");
     public static readonly string OUTPUT = Path.Combine(WD, "OUTPUT");
     
     public static ConsoleColor CC;

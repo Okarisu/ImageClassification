@@ -58,4 +58,8 @@
       <None Include="bin\Debug\net7.0\INPUT\girl.jpg" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="bin\Debug\net7.0\assets\data" />
+    </ItemGroup>
+
 </Project>

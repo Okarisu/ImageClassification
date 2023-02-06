@@ -5,13 +5,13 @@ using CommandLine;
 [Verb("rename")]
 public class RenameOptions
 {
-    [Option('i', "input-folder", Required = true, SetName = "rename")]
-    public string InputFolder { get; set; }
+    //[Option('i', "input-folder", Required = true, SetName = "rename")]
+    //public string InputFolder { get; set; }
 
     [Option('c', "naming-convention", Required = true, SetName = "rename")]
     public string Convention { get; set; }
 
-    [Option("move", SetName = "rename")] public bool Move { get; set; }
+    //[Option("move", SetName = "rename")] public bool Move { get; set; }
 }
 
 [Verb("tag")]
@@ -50,5 +50,5 @@ public class SortOptions
     [Option('i', "input-file", Required = true, SetName = "sort")]
     public string InputFile { get; set; } 
     [Option('s', "score", Required = true, SetName = "sort")]
-    public double MinumumScore { get; set; } 
+    public string MinumumScore { get; set; } 
 }

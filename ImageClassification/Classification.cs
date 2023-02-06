@@ -11,7 +11,7 @@ public class Classification
     {
         var model = Path.Combine(MODELS, options.InputModel);
         ITransformer trainedModel = mlContext.Model.Load(model, out _);
-        var dInfo = Directory.GetFiles(INPUT);
+        var dInfo = Directory.GetFiles(CLASSIFY);
         var records = new Queue<Record>();
 
         string outputFile = CheckFilename(options.OutputFile);

@@ -10,12 +10,31 @@ public class Sort
 {
     public static void SortImages(SortOptions options)
     {
-        /*
-               using (var reader = new StreamReader("path\\to\\file.csv"))
-               using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-               {
-                   var records = csv.GetRecords<Record>();
-               }*/
+        var input = Path.Combine(OUTPUT, options.InputFile);
+
+        Queue<Record> records = new Queue<Record>();
+        using (var reader = new StreamReader(input))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            foreach (var record in csv.GetRecords<Record>()) records.Enqueue(record);
+        }
+
+        for(var i = 0; i < records.Count; i++)
+        {/*
+            if (rec.Score >= double.Parse(options.MinumumScore))
+            {
+                MoveImage(rec.Name, rec.Label);
+            }*/
+
+            var r = records.Dequeue();
+            if (r.Score >= double.Parse(options.MinumumScore))
+            {
+                MoveImage(r.Name, r.Label);
+
+            }
+        }
+
+
         /*
         var name = new Queue<string>();
         var label = new Queue<string>();
@@ -31,30 +50,34 @@ public class Sort
                 score.Enqueue(double.Parse(splits[2]));
             }
         }*/
-
-        var input = Path.Combine(OUTPUT, options.InputFile);
+/*
         using (var reader = new StreamReader(input))
         {
             while (!reader.EndOfStream)
             {
                 var splits = reader.ReadLine().Split(',');
 
-                if (double.Parse(splits[2]) >= options.MinumumScore)
+
+                //Console.WriteLine($"Splits 0: {splits[0]} | splits 1: {splits[1]} | splits 2: {splits[2]}");
+                //if (double.Parse(splits[2], CultureInfo.InvariantCulture) >= double.Parse(options.MinumumScore, CultureInfo.InvariantCulture))
+                if (0.96 >= double.Parse(options.MinumumScore, CultureInfo.InvariantCulture))
+                //if (double.Parse(splits[2], CultureInfo.InvariantCulture) >= 0.9)
                 {
                     MoveImage(splits[0], splits[1]);
                 }
             }
-        }
+        }*/
     }
 
     public static void MoveImage(string file, string label)
     {
+        var src = Path.Combine(INPUT, file);
         var dest = Path.Combine(OUTPUT, label);
         if (!Directory.Exists(dest))
         {
             Directory.CreateDirectory(dest);
         }
-        
-        File.Move(file, Path.Combine(dest, file));
+
+        File.Copy(src, Path.Combine(dest, file));
     }
 }

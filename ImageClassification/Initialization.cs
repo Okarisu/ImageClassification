@@ -8,7 +8,7 @@ public class Initialization
 {
     public static void CheckFilesystem()
     {
-        var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT, OUTPUT};
+        var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT, OUTPUT, IMAGES_TO_PROCESS, CLASSIFY};
 
         if (!Directory.Exists(INCEPTION))
         {
@@ -30,7 +30,8 @@ public class Initialization
 
     public static void RenameAssets(RenameOptions options)
     {
-        var path = Path.Combine(Program.WD, options.InputFolder);
+        //var path = Path.Combine(Program.WD, options.InputFolder);
+        var path = IMAGES_TO_PROCESS;
         try
         {
             DirectoryInfo info = new DirectoryInfo(path);
@@ -41,7 +42,7 @@ public class Initialization
                 File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i));
                 i++;
             }
-
+/*
             if (options.Move)
             {
                 MoveImagesToTrainingFolder(options.InputFolder);
@@ -54,7 +55,7 @@ public class Initialization
                 {
                     MoveImagesToTrainingFolder(options.InputFolder);
                 }
-            }
+            }*/
         }
         catch (DirectoryNotFoundException e)
         {
