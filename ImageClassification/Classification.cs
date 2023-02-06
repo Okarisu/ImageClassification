@@ -63,11 +63,11 @@ public class Classification
             csv.WriteRecords(new[] {record});
         }
     }
+}
 
-    public class Record
-    {
-        public string Name { get; set; }
-        public string Label { get; set; }
-        public double Score { get; set; }
-    }
+public class Record
+{
+    public string Name { get; set; }
+    public string Label { get; set; }
+    public double Score { get; set; }
 }
