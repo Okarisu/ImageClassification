@@ -1,4 +1,6 @@
-﻿namespace ImageClassification;
+﻿using static ImageClassification.Sort;
+
+namespace ImageClassification;
 
 using CommandLine;
 using Microsoft.ML;
@@ -28,11 +30,12 @@ class Program
         var mlContext = new MLContext();
 
 
-        Parser.Default.ParseArguments<RenameOptions, TagOptions, TrainOptions, ClassifyOptions>(args)
+        Parser.Default.ParseArguments<RenameOptions, TagOptions, TrainOptions, ClassifyOptions, SortOptions>(args)
             .WithParsed<RenameOptions>(RenameAssets)
             .WithParsed<TagOptions>(InitTags)
             .WithParsed<TrainOptions>(options => TrainModel(mlContext, options))
             .WithParsed<ClassifyOptions>(options => Classify(mlContext, options))
+            .WithParsed<SortOptions>(SortImages)
             .WithNotParsed(errors => ErrHandler(errors));
     }
 

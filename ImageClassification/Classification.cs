@@ -14,18 +14,19 @@ public class Classification
         var dInfo = Directory.GetFiles(INPUT);
         var records = new Queue<Record>();
 
-        //string outputFile = CheckFilename(options.OutputFile);
+        string outputFile = CheckFilename(options.OutputFile);
         foreach (var file in dInfo)
         {
             var exp = Model.ClassifySingleImage(mlContext, trainedModel, file);
-            //ExportClassification(outputFile, new Record{Name = exp.image, Label = exp.label, Score = exp.score});
-            records.Enqueue(new Record {Name = exp.image, Label = exp.label, Score = exp.score});
+            ExportClassification(outputFile, exp.image, exp.label, exp.score);
+            //records.Enqueue(new Record {Name = exp.image, Label = exp.label, Score = exp.score});
         }
 
-        ExportClassification(options.OutputFile, records);
+        //ExportClassification(options.OutputFile, records);
         Messages.Done("Classification finished.");
     }
-
+    
+    //Works
     public static void ExportClassification(string of, Queue<Record> records)
     {
         string filename = Path.Combine(OUTPUT, of + ".csv");
@@ -55,13 +56,13 @@ public class Classification
         return filename;
     }
 
-    public static void ExportClassification(string filename, Record record)
+    public static void ExportClassification(string filename, string name, string label, double score)
     {
+        var record = String.Join(name, ",", label, ",", score);
         using StreamWriter writer = new StreamWriter(filename);
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        {
-            csv.WriteRecords(new[] {record});
-        }
+        
+            writer.WriteLine(record);
+        
     }
 }
 

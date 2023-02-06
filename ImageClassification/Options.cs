@@ -39,4 +39,16 @@ public class ClassifyOptions
 
     [Option('o', "output-file", Required = true, SetName = "classify")]
     public string OutputFile { get; set; }
+    
+    [Option("no-output", SetName = "classify")]
+    public bool NoOutput { get; set; }
+}
+
+[Verb("sort")]
+public class SortOptions
+{
+    [Option('i', "input-file", Required = true, SetName = "sort")]
+    public string InputFile { get; set; } 
+    [Option('s', "score", Required = true, SetName = "sort")]
+    public double MinumumScore { get; set; } 
 }
