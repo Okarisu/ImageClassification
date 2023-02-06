@@ -1,12 +1,10 @@
-﻿using static ImageClassification.Initialization;
-using static ImageClassification.Terminal;
+﻿namespace ImageClassification;
+
 using CommandLine;
-using static ImageClassification.Controller;
-
-namespace ImageClassification;
-
 using Microsoft.ML;
-using Microsoft.ML.Data;
+using static Initialization;
+using static Classification;
+using static Train;
 
 class Program
 {
@@ -19,9 +17,13 @@ class Program
     public static readonly string TAGS = Path.Combine(DATA, "tags.tsv");
     public static readonly string INPUT = Path.Combine(WD, "INPUT");
     public static readonly string OUTPUT = Path.Combine(WD, "OUTPUT");
+    
+    public static ConsoleColor CC;
+
 
     static void Main(string[] args)
     {
+        CC = Console.ForegroundColor;
         CheckFilesystem();
         var mlContext = new MLContext();
 

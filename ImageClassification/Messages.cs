@@ -1,20 +1,15 @@
-using System.Runtime.CompilerServices;
+using static ImageClassification.Program;
 
 namespace ImageClassification;
 
-public class Terminal
+public class Messages
 {
-
-    public static readonly ConsoleColor CC = Console.ForegroundColor;
-
-    public static void GetHelp()
-    {
-    }
 
     public static void PrintArgumentError()
     {
         Console.WriteLine("Invalid argument! Type classify --help to get more information.");
     }
+
     public static void PrintArgumentError(string message)
     {
         Console.WriteLine("Invalid argument! Type classify --help to get more information.");

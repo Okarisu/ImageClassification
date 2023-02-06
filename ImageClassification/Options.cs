@@ -36,7 +36,7 @@ public class ClassifyOptions
 {
     [Option('m', "input-model", Required = true, SetName = "classify")]
     public string InputModel { get; set; }
+
     [Option('o', "output-file", Required = true, SetName = "classify")]
     public string OutputFile { get; set; }
-    
 }

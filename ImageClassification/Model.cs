@@ -1,9 +1,8 @@
-using static ImageClassification.Program;
-
 namespace ImageClassification;
 
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using static Program;
 
 public class Model
 {
@@ -12,7 +11,6 @@ public class Model
     private static readonly string _inceptionTensorFlowModel =
         Path.Combine(ASSETS, "inception", "tensorflow_inception_graph.pb");
 
-    
 
     public static (ITransformer model, IDataView data) GenerateModel(MLContext mlContext)
     {
@@ -51,7 +49,8 @@ public class Model
         return (model, trainingData);
     }
 
-    public static (string image, string label, double score) ClassifySingleImage(MLContext mlContext, ITransformer model, string fileToClassify)
+    public static (string image, string label, double score) ClassifySingleImage(MLContext mlContext,
+        ITransformer model, string fileToClassify)
     {
         var imageData = new ImageData()
         {
@@ -73,6 +72,7 @@ public class Model
                 $"Image: {Path.GetFileName(prediction.ImagePath)} predicted as: {prediction.PredictedLabelValue} with score: {prediction.Score.Max()} ");
         }
     }
+
     private struct InceptionSettings
     {
         public const int ImageHeight = 224;

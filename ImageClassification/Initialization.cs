@@ -1,6 +1,6 @@
 namespace ImageClassification;
 
-using static Terminal;
+using static Messages;
 using static Program;
 using CommandLine;
 
@@ -8,7 +8,7 @@ public class Initialization
 {
     public static void CheckFilesystem()
     {
-        var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT};
+        var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT, OUTPUT};
 
         if (!Directory.Exists(INCEPTION))
         {
