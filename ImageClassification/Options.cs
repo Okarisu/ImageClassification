@@ -7,8 +7,6 @@ public class RenameOptions
 {
     [Option('c', "naming-convention", Required = true, SetName = "rename")]
     public string Convention { get; set; }
-
-    //[Option("move", SetName = "rename")] public bool Move { get; set; }
 }
 
 [Verb("tag")]
@@ -19,6 +17,9 @@ public class TagOptions
 
     [Option('t', "tag-value", Required = true, SetName = "tag")]
     public string Tag { get; set; }
+    
+    [Option("move", SetName = "rename")] public bool Move { get; set; }
+
 }
 
 [Verb("train")]

@@ -29,6 +29,14 @@ public class Messages
         Console.ForegroundColor = CC;
     }
 
+    public static void Prompt(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.WriteLine(message);
+        Console.ForegroundColor = CC;
+
+    }
+
     public static void Done(string message)
     {
         Console.ForegroundColor = ConsoleColor.Green;

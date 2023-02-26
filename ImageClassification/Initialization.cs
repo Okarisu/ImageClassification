@@ -30,7 +30,8 @@ public class Initialization
 
     public static void RenameAssets(RenameOptions options)
     {
-        //var path = Path.Combine(Program.WD, options.InputFolder);
+        Prompt("== Renaming assets to " + options.Convention + ". ==\n");
+
         var path = IMAGES_TO_PROCESS;
         try
         {
@@ -42,20 +43,6 @@ public class Initialization
                 File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i + file.Extension));
                 i++;
             }
-/*
-            if (options.Move)
-            {
-                MoveImagesToTrainingFolder(options.InputFolder);
-            }
-            else
-            {
-                Console.WriteLine("Do you wish to move renamed images to training folder? [Y/n] ");
-                var key = Console.ReadKey(false);
-                if (key.ToString()?.ToLower() == "y" || key.Key == ConsoleKey.Enter)
-                {
-                    MoveImagesToTrainingFolder(options.InputFolder);
-                }
-            }*/
         }
         catch (DirectoryNotFoundException e)
         {
@@ -63,17 +50,20 @@ public class Initialization
         }
         finally
         {
-            Done("== Renaming assets in " + Path.GetDirectoryName(path) + " to " + options.Convention +
-                 " completed. ==");
+            Done("== Completed renaming assets to " + options.Convention + ". ==\n");
         }
     }
 
-    private static void MoveImagesToTrainingFolder(string input)
+    private static void MoveImagesToTrainingFolder()
     {
-        foreach (var file in new DirectoryInfo(input).GetFiles())
+        Prompt("== Moving tagged assets to training folder. ==\n");
+
+        foreach (var file in new DirectoryInfo(IMAGES_TO_PROCESS).GetFiles())
         {
-            File.Move(file.FullName, Path.Combine(TRAINING_IMAGES, file.FullName));
+            File.Move(file.FullName, Path.Combine(TRAINING_IMAGES, file.Name));
         }
+
+        Done("== Completed moving tagged assets. ==\n");
     }
 
     public static void InitTags(TagOptions options)
@@ -83,6 +73,18 @@ public class Initialization
             if (!file.FullName.Contains(options.Convention)) continue;
             using StreamWriter writer = new StreamWriter(TAGS, true);
             writer.WriteLine("{0}	{1}", file.FullName, options.Tag);
+        }
+
+        if (options.Move)
+        {
+            MoveImagesToTrainingFolder();
+        }
+        else
+        {
+            Prompt("Do you wish to move tagged assets to training folder? [Y/n]\n");
+            var inp = Console.ReadKey();
+            if (inp.Key is ConsoleKey.Y or ConsoleKey.Enter)
+                MoveImagesToTrainingFolder();
         }
     }
 }
