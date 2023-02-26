@@ -5,9 +5,6 @@ using CommandLine;
 [Verb("rename")]
 public class RenameOptions
 {
-    //[Option('i', "input-folder", Required = true, SetName = "rename")]
-    //public string InputFolder { get; set; }
-
     [Option('c', "naming-convention", Required = true, SetName = "rename")]
     public string Convention { get; set; }
 

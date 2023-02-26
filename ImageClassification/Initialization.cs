@@ -39,7 +39,7 @@ public class Initialization
             var i = 1;
             foreach (var file in info.GetFiles())
             {
-                File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i));
+                File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i + file.Extension));
                 i++;
             }
 /*
