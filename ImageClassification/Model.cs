@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ImageClassification;
 
 using Microsoft.ML;
@@ -6,12 +8,13 @@ using static Program;
 
 public class Model
 {
-    private static readonly string _testTagsTsv = Path.Combine(DATA, "test-tags.tsv");
+    private static readonly string _testTagsTsv = TEST_TAGS;
 
     private static readonly string _inceptionTensorFlowModel =
         Path.Combine(ASSETS, "inception", "tensorflow_inception_graph.pb");
 
 
+    [SuppressMessage("ReSharper.DPA", "DPA0003: Excessive memory allocations in LOH", MessageId = "type: System.Byte[]; size: 52MB")]
     public static (ITransformer model, IDataView data) GenerateModel(MLContext mlContext)
     {
         IEstimator<ITransformer> pipeline = mlContext.Transforms.LoadImages(outputColumnName: "input",

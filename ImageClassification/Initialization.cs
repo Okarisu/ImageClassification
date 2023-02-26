@@ -10,12 +10,6 @@ public class Initialization
     {
         var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT, OUTPUT, IMAGES_TO_PROCESS, CLASSIFY};
 
-        if (!Directory.Exists(INCEPTION))
-        {
-            PrintFilesystemError(
-                "Critical error: Missing Inception model! Download it at https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip");
-            Directory.CreateDirectory(INCEPTION);
-        }
 
         foreach (var dir in filesystem)
         {
@@ -23,9 +17,6 @@ public class Initialization
             Directory.CreateDirectory(dir);
             PrintFilesystemAlternationMessage(dir);
         }
-
-        if (!File.Exists(TAGS))
-            File.Create(TAGS);
     }
 
     public static void RenameAssets(RenameOptions options)
@@ -68,12 +59,34 @@ public class Initialization
 
     public static void InitTags(TagOptions options)
     {
-        foreach (var file in new DirectoryInfo(TRAINING_IMAGES).GetFiles())
+        if (!File.Exists(TAGS))
+            File.Create(TAGS);
+
+        if (!File.Exists(TEST_TAGS))
+            File.Create(TEST_TAGS);
+        Thread.Sleep(1500);
+
+        Queue<string> files = new Queue<string>();
+        foreach (var file in new DirectoryInfo(IMAGES_TO_PROCESS).GetFiles())
         {
             if (!file.FullName.Contains(options.Convention)) continue;
-            using StreamWriter writer = new StreamWriter(TAGS, true);
-            writer.WriteLine("{0}	{1}", file.FullName, options.Tag);
+            files.Enqueue(file.Name);
         }
+
+        for (var count = 0; count < Math.Round(Convert.ToDouble(9 * files.Count / 10)); count++)
+        {
+            using StreamWriter writer = new StreamWriter(TAGS, true);
+            writer.WriteLine("{0}\t{1}", files.Dequeue(), options.Tag);
+        }
+
+        while (files.Count > 0)
+        {
+            using StreamWriter writer = new StreamWriter(TEST_TAGS, true);
+            writer.WriteLine("{0}\t{1}", files.Dequeue(), options.Tag);
+        }
+        
+        Done("== Completed tagging assets. ==\n");
+
 
         if (options.Move)
         {
@@ -85,6 +98,8 @@ public class Initialization
             var inp = Console.ReadKey();
             if (inp.Key is ConsoleKey.Y or ConsoleKey.Enter)
                 MoveImagesToTrainingFolder();
+            else
+                Prompt("Aborting...");
         }
     }
 }
