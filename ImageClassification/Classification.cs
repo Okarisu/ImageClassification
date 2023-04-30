@@ -59,9 +59,9 @@ public class Classification
     public static void ExportClassification(string filename, string name, string label, double score)
     {
         var record = String.Join(name, ",", label, ",", score);
-        using StreamWriter writer = new StreamWriter(filename);
+        using StreamWriter writer = new StreamWriter(filename, true);
         
-            writer.WriteLine(record);
+            writer.WriteLine($"{name},{label},{score}");
         
     }
 }

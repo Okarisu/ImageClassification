@@ -24,12 +24,14 @@ public class Initialization
         Prompt("== Renaming assets to " + options.Convention + ". ==\n");
 
         var path = IMAGES_TO_PROCESS;
+        var i = 1;
         try
         {
-            DirectoryInfo info = new DirectoryInfo(path);
+            var info = new DirectoryInfo(path).GetFiles();
 
-            var i = 1;
-            foreach (var file in info.GetFiles())
+            var ext = Directory.Exists(path);
+
+            foreach (var file in info)
             {
                 File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i + file.Extension));
                 i++;
@@ -41,7 +43,7 @@ public class Initialization
         }
         finally
         {
-            Done("== Completed renaming assets to " + options.Convention + ". ==\n");
+            Done($"== Completed renaming {i} assets to " + options.Convention + ". ==\n");
         }
     }
 
