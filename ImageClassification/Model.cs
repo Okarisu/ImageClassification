@@ -6,7 +6,7 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using static Program;
 
-public class Model
+public abstract class Model
 {
     private static readonly string _testTagsTsv = TEST_TAGS;
 
