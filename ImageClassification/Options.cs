@@ -2,20 +2,25 @@ namespace ImageClassification;
 
 using CommandLine;
 
+[Verb("init", isDefault: true)]
+public class Init
+{
+}
+
 [Verb("rename")]
 public class RenameOptions
 {
-    [Option('c', "naming-convention", Required = true, SetName = "rename")]
+    [Option('f', "filename", Required = true, SetName = "rename")]
     public string Convention { get; set; }
 }
 
 [Verb("tag")]
-public class TagOptions
+public abstract class TagOptions
 {
-    [Option('c', "naming-convention", Required = true, SetName = "tag")]
+    [Option('f', "filename", Required = true, SetName = "tag")]
     public string Convention { get; set; }
 
-    [Option('t', "tag-value", Required = true, SetName = "tag")]
+    [Option('t', "tag", Required = true, SetName = "tag")]
     public string Tag { get; set; }
     
     [Option("move", SetName = "rename")] public bool Move { get; set; }
@@ -23,14 +28,14 @@ public class TagOptions
 }
 
 [Verb("train")]
-public class TrainOptions
+public abstract class TrainOptions
 {
     [Option('o', "output-model", Required = true, SetName = "train")]
     public string OutputModel { get; set; }
 }
 
-[Verb("classify", isDefault: true)]
-public class ClassifyOptions
+[Verb("classify")]
+public abstract class ClassifyOptions
 {
     [Option('m', "input-model", Required = true, SetName = "classify")]
     public string InputModel { get; set; }
@@ -38,12 +43,12 @@ public class ClassifyOptions
     [Option('o', "output-file", Required = true, SetName = "classify")]
     public string OutputFile { get; set; }
     
-    [Option("no-output", SetName = "classify")]
-    public bool NoOutput { get; set; }
+    [Option("external-location", SetName = "classify")]
+    public string ExternalLocationInput { get; set; }
 }
 
 [Verb("sort")]
-public class SortOptions
+public abstract class SortOptions
 {
     [Option('i', "input-file", Required = true, SetName = "sort")]
     public string InputFile { get; set; } 
