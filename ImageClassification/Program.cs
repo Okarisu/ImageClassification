@@ -20,8 +20,8 @@ class Program
     public static readonly string TAGS = Path.Combine(DATA, "tags.tsv");
     public static readonly string TEST_TAGS = Path.Combine(DATA, "test_tags.tsv");
     public static readonly string INPUT = Path.Combine(WD, "INPUT");
-    public static readonly string CLASSIFY = Path.Combine(INPUT, "CLASSIFY");
     public static readonly string OUTPUT = Path.Combine(WD, "OUTPUT");
+    public static readonly string CLASSIFY = Path.Combine(INPUT, "CLASSIFY");
     
     public static ConsoleColor CC;
 

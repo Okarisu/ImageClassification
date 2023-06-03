@@ -10,7 +10,7 @@ Download the binary file from release, place it to your desired folder and follo
 ### Workflow
 This program composes several modules that are to be used in specific order:
 
-- creating filesystem and downloading Tensorflow model
+- creating filesystem and downloading inception model
 - renaming the training images
 - assigning tags to the images
 - training the model
@@ -18,7 +18,8 @@ This program composes several modules that are to be used in specific order:
 - sorting images
 
 #### Initialization
-Run the program by executing `./classifier` command in the project root folder. It first creates its filesystem and downloads the [inception5h](https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip) model to its data folder.
+Run the program by executing `./classifier` command in the project root folder. It first creates its filesystem
+and downloads the [inception5h](https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip) model to its data folder.
 
 #### Renaming images
 Program uses filenames to assign tags to images in the later step. Because of this, images of the same category/tag need to be named the same.

@@ -1,5 +1,7 @@
 namespace ImageClassification;
 
+using System.Net;
+using System.IO.Compression;
 using static Messages;
 using static Program;
 using CommandLine;
@@ -8,8 +10,8 @@ public class Initialization
 {
     public static void CheckFilesystem()
     {
-        var filesystem = new[] {ASSETS, TRAINING_IMAGES, DATA, MODELS, INPUT, OUTPUT, IMAGES_TO_PROCESS, CLASSIFY};
-
+        var filesystem = new[]
+            {ASSETS, TRAINING_IMAGES, IMAGES_TO_PROCESS, DATA, MODELS, TAGS, TEST_TAGS, INPUT, OUTPUT, CLASSIFY};
 
         foreach (var dir in filesystem)
         {
@@ -17,6 +19,26 @@ public class Initialization
             Directory.CreateDirectory(dir);
             PrintFilesystemAlternationMessage(dir);
         }
+
+        if (Directory.Exists(INCEPTION)) return;
+        Directory.CreateDirectory(INCEPTION);
+        PrintFilesystemAlternationMessage(INCEPTION); //TODO model message
+
+        DownloadInceptionModel();
+        UnzipInceptionModel();
+    }
+    [Obsolete("Obsolete")]
+    private static void DownloadInceptionModel()
+    {
+        using var client = new WebClient();
+        client.DownloadFile("https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip",
+            "inception5h.zip");
+    }
+
+    private static void UnzipInceptionModel()
+    {
+        ZipFile.ExtractToDirectory("inception5h.zip", INCEPTION);
+        File.Delete("inception5h.zip");
     }
 
     public static void RenameAssets(RenameOptions options)
@@ -86,7 +108,7 @@ public class Initialization
             using StreamWriter writer = new StreamWriter(TEST_TAGS, true);
             writer.WriteLine("{0}\t{1}", files.Dequeue(), options.Tag);
         }
-        
+
         Done("== Completed tagging assets. ==\n");
 
 
