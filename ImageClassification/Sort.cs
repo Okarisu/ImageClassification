@@ -4,15 +4,19 @@ namespace ImageClassification;
 
 using CsvHelper;
 using System.Globalization;
-using CommandLine;
 
-public class Sort
+public abstract class Sort
 {
+    //TODO sort
     public static void SortImages(SortOptions options)
     {
         var input = Path.Combine(OUTPUT, options.InputFile);
-
-        Queue<Record> records = new Queue<Record>();
+        if (!File.Exists(input))
+        {
+            Messages.PrintFilesystemError("Input file not found, aborting.");
+            return;
+        }
+        Queue<Record> records = new();
         using (var reader = new StreamReader(input))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {

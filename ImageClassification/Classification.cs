@@ -5,27 +5,47 @@ using CsvHelper;
 using System.Globalization;
 using static Program;
 
-public class Classification
+public abstract class Classification
 {
     public static void Classify(MLContext mlContext, ClassifyOptions options)
     {
-        var model = Path.Combine(MODELS, options.InputModel);
-        ITransformer trainedModel = mlContext.Model.Load(model, out _);
-        var dInfo = Directory.GetFiles(CLASSIFY);
-        var records = new Queue<Record>();
+        string pathToClassify;
+        if (options.ExternalLocationInput != "")
+        {
+            if (Path.Exists(options.ExternalLocationInput))
+            {
+                pathToClassify = options.ExternalLocationInput;
+            }
+            else
+            {
+                Messages.PrintFilesystemError("Path does not exist, aborting.");
+                return;
+            }
+        }
+        else
+        {
+            pathToClassify = CLASSIFY;
+        }
 
-        string outputFile = CheckFilename(options.OutputFile);
+        var modelPath = Path.Combine(MODELS, options.InputModel);
+        if (!File.Exists(modelPath))
+        {
+            Messages.PrintFilesystemError("Model not found, aborting.");
+            return;
+        }
+        ITransformer trainedModel = mlContext.Model.Load(modelPath, out _);
+        var dInfo = Directory.GetFiles(pathToClassify);
+
+        var outputFile = CheckFilename(options.OutputFile);
         foreach (var file in dInfo)
         {
             var exp = Model.ClassifySingleImage(mlContext, trainedModel, file);
             ExportClassification(outputFile, exp.image, exp.label, exp.score);
-            //records.Enqueue(new Record {Name = exp.image, Label = exp.label, Score = exp.score});
         }
 
-        //ExportClassification(options.OutputFile, records);
         Messages.Done("Classification finished.");
     }
-    
+
     //Works
     public static void ExportClassification(string of, Queue<Record> records)
     {
@@ -58,17 +78,14 @@ public class Classification
 
     public static void ExportClassification(string filename, string name, string label, double score)
     {
-        var record = String.Join(name, ",", label, ",", score);
         using StreamWriter writer = new StreamWriter(filename, true);
-        
-            writer.WriteLine($"{name},{label},{score}");
-        
+        writer.WriteLine($"{name},{label},{score}");
     }
 }
 
 public class Record
 {
-    public string Name { get; set; }
-    public string Label { get; set; }
+    public string Name { get; set; } = null!;
+    public string Label { get; set; } = null!;
     public double Score { get; set; }
 }

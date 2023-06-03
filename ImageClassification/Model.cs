@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+// ReSharper disable All
 
 namespace ImageClassification;
 
@@ -8,9 +9,9 @@ using static Program;
 
 public abstract class Model
 {
-    private static readonly string _testTagsTsv = TEST_TAGS;
+    private static readonly string TestTagsTsv = TEST_TAGS;
 
-    private static readonly string _inceptionTensorFlowModel =
+    private static readonly string InceptionTensorFlowModel =
         Path.Combine(ASSETS, "inception", "tensorflow_inception_graph.pb");
 
 
@@ -24,7 +25,7 @@ public abstract class Model
                 inputColumnName: "input"))
             .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "input",
                 interleavePixelColors: InceptionSettings.ChannelsLast, offsetImage: InceptionSettings.Mean))
-            .Append(mlContext.Model.LoadTensorFlowModel(_inceptionTensorFlowModel).ScoreTensorFlowModel(
+            .Append(mlContext.Model.LoadTensorFlowModel(InceptionTensorFlowModel).ScoreTensorFlowModel(
                 outputColumnNames: new[] {"softmax2_pre_activation"}, inputColumnNames: new[] {"input"},
                 addBatchDimensionInput: true))
             .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "LabelKey",
@@ -36,7 +37,7 @@ public abstract class Model
         IDataView trainingData = mlContext.Data.LoadFromTextFile<ImageData>(path: TAGS, hasHeader: false);
         Console.WriteLine("=============== Training classification model ===============");
         ITransformer model = pipeline.Fit(trainingData);
-        IDataView testData = mlContext.Data.LoadFromTextFile<ImageData>(path: _testTagsTsv, hasHeader: false);
+        IDataView testData = mlContext.Data.LoadFromTextFile<ImageData>(path: TestTagsTsv, hasHeader: false);
         IDataView predictions = model.Transform(testData);
         IEnumerable<ImagePrediction> imagePredictionData =
             mlContext.Data.CreateEnumerable<ImagePrediction>(predictions, true);
@@ -48,7 +49,7 @@ public abstract class Model
                 predictedLabelColumnName: "PredictedLabel");
         Console.WriteLine($"LogLoss is: {metrics.LogLoss}");
         Console.WriteLine(
-            $"PerClassLogLoss is: {String.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
+            $"PerClassLogLoss is: {string.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
         return (model, trainingData);
     }
 

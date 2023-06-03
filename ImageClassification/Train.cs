@@ -12,7 +12,8 @@ public class Train
         if (!File.Exists(Path.Combine(INCEPTION, "tensorflow_inception_graph.pb")))
         {
             PrintFilesystemError(
-                "Critical error: Missing Inception model! Download it at https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip and place it to the assets folder");
+                "Critical error: Missing Inception model!");
+            Initialization.CheckFilesystem();
         }
         var modelPath = Path.Combine(MODELS, options.OutputModel);
         var model = Model.GenerateModel(mlContext);

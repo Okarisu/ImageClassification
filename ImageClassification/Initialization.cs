@@ -4,9 +4,8 @@ using System.Net;
 using System.IO.Compression;
 using static Messages;
 using static Program;
-using CommandLine;
 
-public class Initialization
+public abstract class Initialization
 {
     public static void CheckFilesystem()
     {
@@ -22,7 +21,6 @@ public class Initialization
 
         if (Directory.Exists(INCEPTION)) return;
         Directory.CreateDirectory(INCEPTION);
-        PrintFilesystemAlternationMessage(INCEPTION); //TODO model message
 
         DownloadInceptionModel();
         UnzipInceptionModel();
@@ -30,15 +28,19 @@ public class Initialization
     [Obsolete("Obsolete")]
     private static void DownloadInceptionModel()
     {
+        PrintModelDownloadMessage("Warning: Missing inception model, downloading...");
         using var client = new WebClient();
         client.DownloadFile("https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip",
             "inception5h.zip");
+        PrintModelDownloadMessage("Downloading model completed.");
     }
 
     private static void UnzipInceptionModel()
     {
+        PrintModelDownloadMessage("Extracting model...");
         ZipFile.ExtractToDirectory("inception5h.zip", INCEPTION);
         File.Delete("inception5h.zip");
+        PrintModelDownloadMessage("Extracting completed.");
     }
 
     public static void RenameAssets(RenameOptions options)
@@ -51,21 +53,16 @@ public class Initialization
         {
             var info = new DirectoryInfo(path).GetFiles();
 
-            var ext = Directory.Exists(path);
-
             foreach (var file in info)
             {
                 File.Move(file.FullName, Path.Combine(path, options.Convention + "_" + i + file.Extension));
                 i++;
             }
+            Done($"== Completed renaming {i} assets to " + options.Convention + ". ==\n");
         }
         catch (DirectoryNotFoundException e)
         {
             Console.WriteLine(e);
-        }
-        finally
-        {
-            Done($"== Completed renaming {i} assets to " + options.Convention + ". ==\n");
         }
     }
 
@@ -90,7 +87,7 @@ public class Initialization
             File.Create(TEST_TAGS);
         Thread.Sleep(1500);
 
-        Queue<string> files = new Queue<string>();
+        Queue<string> files = new();
         foreach (var file in new DirectoryInfo(IMAGES_TO_PROCESS).GetFiles())
         {
             if (!file.FullName.Contains(options.Convention)) continue;
@@ -99,13 +96,13 @@ public class Initialization
 
         for (var count = 0; count < Math.Round(Convert.ToDouble(9 * files.Count / 10)); count++)
         {
-            using StreamWriter writer = new StreamWriter(TAGS, true);
+            using var writer = new StreamWriter(TAGS, true);
             writer.WriteLine("{0}\t{1}", files.Dequeue(), options.Tag);
         }
 
         while (files.Count > 0)
         {
-            using StreamWriter writer = new StreamWriter(TEST_TAGS, true);
+            using var writer = new StreamWriter(TEST_TAGS, true);
             writer.WriteLine("{0}\t{1}", files.Dequeue(), options.Tag);
         }
 

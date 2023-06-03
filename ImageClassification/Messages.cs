@@ -2,23 +2,18 @@ using static ImageClassification.Program;
 
 namespace ImageClassification;
 
-public class Messages
+public abstract class Messages
 {
-
-    public static void PrintArgumentError()
-    {
-        Console.WriteLine("Invalid argument! Type classify --help to get more information.");
-    }
-
-    public static void PrintArgumentError(string message)
-    {
-        Console.WriteLine("Invalid argument! Type classify --help to get more information.");
-    }
-
     public static void PrintFilesystemAlternationMessage(string directory)
     {
         Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.WriteLine("Filesystem error: Missing directory \"{0}\", recreating", directory);
+        Console.WriteLine("Filesystem warning: Missing directory \"{0}\", creating.", directory);
+        Console.ForegroundColor = CC;
+    }
+    public static void PrintModelDownloadMessage(string msg)
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(msg);
         Console.ForegroundColor = CC;
     }
 
