@@ -10,7 +10,7 @@ public abstract class Classification
     public static void Classify(MLContext mlContext, ClassifyOptions options)
     {
         string pathToClassify;
-        if (options.ExternalLocationInput != "")
+       /* if (options.ExternalLocationInput != null)
         {
             if (Path.Exists(options.ExternalLocationInput))
             {
@@ -23,9 +23,9 @@ public abstract class Classification
             }
         }
         else
-        {
+        {*/
             pathToClassify = CLASSIFY;
-        }
+        
 
         var modelPath = Path.Combine(MODELS, options.InputModel);
         if (!File.Exists(modelPath))

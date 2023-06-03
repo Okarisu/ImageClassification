@@ -9,14 +9,23 @@ public abstract class Initialization
 {
     public static void CheckFilesystem()
     {
-        var filesystem = new[]
-            {ASSETS, TRAINING_IMAGES, IMAGES_TO_PROCESS, DATA, MODELS, TAGS, TEST_TAGS, INPUT, OUTPUT, CLASSIFY};
+        var folders = new[]
+            {ASSETS, TRAINING_IMAGES, IMAGES_TO_PROCESS, DATA, MODELS, INPUT, OUTPUT, CLASSIFY};
 
-        foreach (var dir in filesystem)
+        var files = new[] {TAGS, TEST_TAGS};
+        foreach (var fol in folders)
         {
-            if (Directory.Exists(dir)) continue;
-            Directory.CreateDirectory(dir);
-            PrintFilesystemAlternationMessage(dir);
+            if (Directory.Exists(fol)) continue;
+            Directory.CreateDirectory(fol);
+            PrintFilesystemAlternationMessage(fol+" directory");
+        }
+
+        foreach (var file in files)
+        {
+            if (File.Exists(file)) continue;
+            File.Create(file);
+            PrintFilesystemAlternationMessage(file);
+
         }
 
         if (Directory.Exists(INCEPTION)) return;
@@ -83,9 +92,10 @@ public abstract class Initialization
         if (!File.Exists(TAGS))
             File.Create(TAGS);
 
+        Task.Delay(500).Wait();
         if (!File.Exists(TEST_TAGS))
             File.Create(TEST_TAGS);
-        Thread.Sleep(1500);
+        Task.Delay(500).Wait();
 
         Queue<string> files = new();
         foreach (var file in new DirectoryInfo(IMAGES_TO_PROCESS).GetFiles())

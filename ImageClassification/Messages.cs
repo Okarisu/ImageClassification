@@ -7,7 +7,7 @@ public abstract class Messages
     public static void PrintFilesystemAlternationMessage(string directory)
     {
         Console.ForegroundColor = ConsoleColor.DarkYellow;
-        Console.WriteLine("Filesystem warning: Missing directory \"{0}\", creating.", directory);
+        Console.WriteLine("Filesystem warning: Missing \"{0}\", creating.", directory);
         Console.ForegroundColor = CC;
     }
     public static void PrintModelDownloadMessage(string msg)

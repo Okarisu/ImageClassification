@@ -43,13 +43,9 @@ public abstract class Model
             mlContext.Data.CreateEnumerable<ImagePrediction>(predictions, true);
         DisplayResults(imagePredictionData);
         Console.WriteLine("=============== Classification metrics ===============");
-        MulticlassClassificationMetrics metrics =
-            mlContext.MulticlassClassification.Evaluate(predictions,
-                labelColumnName: "LabelKey",
-                predictedLabelColumnName: "PredictedLabel");
-        Console.WriteLine($"LogLoss is: {metrics.LogLoss}");
-        Console.WriteLine(
-            $"PerClassLogLoss is: {string.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
+        //MulticlassClassificationMetrics metrics = mlContext.MulticlassClassification.Evaluate(predictions, labelColumnName: "LabelKey", predictedLabelColumnName: "PredictedLabel");
+        //Console.WriteLine($"LogLoss is: {metrics.LogLoss}");
+        //Console.WriteLine($"PerClassLogLoss is: {string.Join(" , ", metrics.PerClassLogLoss.Select(c => c.ToString()))}");
         return (model, trainingData);
     }
 
